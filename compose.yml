@@ -4,11 +4,12 @@ services:
     build: .
     ports:
       - "3000:3000"
+      - "9229:9229"
     volumes:
       - .:/app
     env_file:
       - .env
-    command: npm run dev
+    command: npm run debug
   db:
     image: postgres:16
     environment:
