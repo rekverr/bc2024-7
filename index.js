@@ -72,18 +72,6 @@ app.get('/devices/:serial_number', async (req, res) => {
   });
 });
 
-// Додатково: повернення пристрою (опціонально)
-app.post('/return', async (req, res) => {
-  const { serial_number } = req.body;
-  if (!serial_number) return res.status(400).json({ error: 'Missing serial_number' });
-
-  const device = await pool.query('SELECT * FROM devices WHERE serial_number = $1', [serial_number]);
-  if (device.rowCount === 0) return res.status(404).json({ error: 'Device not found' });
-
-  await pool.query('UPDATE devices SET user_id = NULL WHERE serial_number = $1', [serial_number]);
-  res.sendStatus(200);
-});
-
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Inventory system started on port ${PORT}`);
